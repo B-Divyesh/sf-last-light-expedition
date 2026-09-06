@@ -28,6 +28,7 @@ Repair 5 passes locally and at <https://last-light-expedition.sociobot.in>.
 - The demo entered in one click, stayed labeled, reset safely, preserved real-data isolation, and reaches the six-choice end screen. The full suite also covers all four endings, restart, keyboard/touch, offline reload, settings, invalid-save recovery, focus, 200% text, and the reduced-motion setting.
 - The installed worker verifier was inspected and run as `/opt/fleet/lib/verify-url.sh https://last-light-expedition.sociobot.in /work/.evidence/last-light-expedition-repair-5/live-helper`. It passed HTTPS, title, language, one main/h1, image alternatives, named buttons, and zero browser errors.
 - Axe checks passed on the root, demo, legal, purchase-status, and designed-404 routes in both live browser profiles with no serious or critical issues.
+- Fresh live mobile Lighthouse: Performance 100, Accessibility 100, Best Practices 100, and SEO 100; FCP 901 ms, LCP 1,276 ms, CLS 0, and TBT 16 ms.
 - Live routes `/`, `/demo`, `/privacy`, `/terms`, `/license`, `robots.txt`, `sitemap.xml`, and public offer metadata return 200. Unknown page and asset paths deliberately return HTTP 404; the browser suite confirms the designed recovery page.
 - Live headers retain CSP, HSTS, `nosniff`, strict referrer policy, frame denial, and disabled camera, microphone, geolocation, and payment permissions.
 - `.factory/catalog-description.txt` remains verb-first, 105 characters, and was copied unchanged to `/work/.evidence/catalog-description.txt`.
