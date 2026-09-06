@@ -81,6 +81,8 @@ Resource-change labels use the fixed terms `warmth`, `supplies`, and `trust`, fo
 | Demo play is never saved. | 5 |
 | Erase saved run | 3 |
 | Save settings | 2 |
+| Settings saved. This unfinished run will resume in this browser. | 9 |
+| Settings saved. This unfinished run will not be stored. | 9 |
 
 ## Footer
 

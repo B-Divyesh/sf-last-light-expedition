@@ -5,7 +5,7 @@ import { clearRun, defaultSettings, loadRun, loadSettings, saveRun, saveSettings
 const app = document.querySelector<HTMLDivElement>("#app")!;
 if (!app) throw new Error("App root is missing");
 
-const build = "1.1.0";
+const build = "1.1.1";
 const origin = "https://last-light-expedition.sociobot.in";
 let game: GameState | null = null;
 let demoMode = false;
@@ -241,14 +241,14 @@ function landing(): string {
 function settingsDialog(): string {
   return `
     <dialog id="settings-dialog" aria-labelledby="settings-title">
-      <form method="dialog">
-        <div class="dialog-heading"><h2 id="settings-title">Game settings</h2><button class="close-button" value="close" aria-label="Close settings">×</button></div>
+      <form>
+        <div class="dialog-heading"><h2 id="settings-title">Game settings</h2><button class="close-button" type="button" data-action="close-settings" aria-label="Close settings">×</button></div>
         <label class="toggle"><span><strong>Sound effects</strong><small>Plays a short tone after a choice.</small></span><input type="checkbox" name="sound" ${settings.sound ? "checked" : ""} /></label>
         <label class="toggle"><span><strong>Reduce motion</strong><small>Stops the map marker drift.</small></span><input type="checkbox" name="reducedMotion" ${settings.reducedMotion ? "checked" : ""} /></label>
         <label class="toggle"><span><strong>Remember unfinished run</strong><small>Saves real play in this browser. Demo play is never saved.</small></span><input type="checkbox" name="rememberRun" ${settings.rememberRun ? "checked" : ""} /></label>
         ${demoMode ? "" : '<button class="danger-button" type="button" data-action="erase-save">Erase saved run</button>'}
         <p id="settings-status" aria-live="polite"></p>
-        <button class="primary" value="close">Save settings</button>
+        <button class="primary" type="submit">Save settings</button>
       </form>
     </dialog>`;
 }
@@ -383,11 +383,17 @@ function takeChoice(choiceId: string): void {
 function openSettings(button: HTMLElement): void {
   lastFocused = button;
   const dialog = document.querySelector<HTMLDialogElement>("#settings-dialog");
+  const form = dialog?.querySelector<HTMLFormElement>("form");
+  if (form) {
+    form.querySelector<HTMLInputElement>('[name="sound"]')!.checked = settings.sound;
+    form.querySelector<HTMLInputElement>('[name="reducedMotion"]')!.checked = settings.reducedMotion;
+    form.querySelector<HTMLInputElement>('[name="rememberRun"]')!.checked = settings.rememberRun;
+  }
   dialog?.showModal();
   dialog?.querySelector<HTMLInputElement>("input")?.focus();
 }
 
-function closeSettings(dialog: HTMLDialogElement): void {
+function persistSettings(dialog: HTMLDialogElement): void {
   const form = dialog.querySelector<HTMLFormElement>("form");
   if (form) {
     const data = new FormData(form);
@@ -400,6 +406,9 @@ function closeSettings(dialog: HTMLDialogElement): void {
     if (game && !demoMode) saveRun(game, settings.rememberRun);
     updateMotionSetting();
   }
+}
+
+function closeSettings(): void {
   lastFocused?.focus();
 }
 
@@ -419,6 +428,7 @@ function bindInteractions(): void {
         case "start-real": startReal(); break;
         case "restart": restartGame(); break;
         case "open-settings": openSettings(button); break;
+        case "close-settings": document.querySelector<HTMLDialogElement>("#settings-dialog")?.close("cancelled"); break;
         case "erase-save":
           if (!window.confirm("Erase the saved run on this browser? This cannot be undone.")) break;
           clearRun();
@@ -432,7 +442,16 @@ function bindInteractions(): void {
   });
   document.querySelectorAll<HTMLElement>("[data-choice]").forEach((button) => button.addEventListener("click", () => takeChoice(button.dataset.choice!)));
   const dialog = document.querySelector<HTMLDialogElement>("#settings-dialog");
-  dialog?.addEventListener("close", () => closeSettings(dialog));
+  const form = dialog?.querySelector<HTMLFormElement>("form");
+  form?.addEventListener("submit", (event) => {
+    event.preventDefault();
+    persistSettings(dialog!);
+    dialog!.close("saved");
+    announce(settings.rememberRun
+      ? "Settings saved. This unfinished run will resume in this browser."
+      : "Settings saved. This unfinished run will not be stored.");
+  });
+  dialog?.addEventListener("close", closeSettings);
   dialog?.addEventListener("click", (event) => {
     if (event.target === dialog) dialog.close();
   });

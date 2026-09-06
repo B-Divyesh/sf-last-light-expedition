@@ -53,7 +53,7 @@
     "claim": "An unfinished real run is stored only after opt-in, resumes after reload, and Erase saved run removes it.",
     "where": "Local data and limits, Settings, Privacy, README",
     "test": "npm run test:e2e -- --grep @claim:opt-in-run-storage",
-    "sandbox": "fresh real-play route; prove a default choice is not stored, opt in and reload at Camp 2, erase the saved run, then reload at Camp 1"
+    "sandbox": "fresh real-play route; prove a default choice is not stored; save opt-in and observe its completed status before reading storage; reload at Camp 2; erase and reload at Camp 1"
   },
   {
     "id": "settings-persist",

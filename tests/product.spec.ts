@@ -130,7 +130,14 @@ test("@claim:opt-in-run-storage an unfinished run persists only after opt-in and
   await page.getByRole("button", { name: "Settings" }).click();
   await page.getByLabel("Remember unfinished run").check();
   await page.getByRole("button", { name: "Save settings" }).click();
-  expect(await page.evaluate(() => JSON.parse(localStorage.getItem("last-light:run") ?? "null")?.campIndex)).toBe(1);
+  await expect(page.getByRole("dialog", { name: "Game settings" })).toBeHidden();
+  await expect(page.getByText("Settings saved. This unfinished run will resume in this browser.")).toBeVisible();
+  const savedTransition = await page.evaluate(() => ({
+    dialogOpen: document.querySelector("#settings-dialog")?.hasAttribute("open"),
+    campIndex: JSON.parse(localStorage.getItem("last-light:run") ?? "null")?.campIndex,
+    rememberRun: JSON.parse(localStorage.getItem("last-light:settings") ?? "null")?.rememberRun,
+  }));
+  expect(savedTransition).toEqual({ dialogOpen: false, campIndex: 1, rememberRun: true });
   await page.reload();
   await expect(page.getByLabel("Expedition controls").getByText("Camp 2 of 6", { exact: true })).toBeVisible();
 
@@ -140,6 +147,7 @@ test("@claim:opt-in-run-storage an unfinished run persists only after opt-in and
   await expect(page.getByText("Saved run erased. Future runs will not be saved.")).toBeVisible();
   expect(await page.evaluate(() => localStorage.getItem("last-light:run"))).toBeNull();
   await page.getByRole("button", { name: "Save settings" }).click();
+  await expect(page.getByText("Settings saved. This unfinished run will not be stored.")).toBeVisible();
   await page.reload();
   await expect(page.getByLabel("Expedition controls").getByText("Camp 1 of 6", { exact: true })).toBeVisible();
 });
@@ -309,8 +317,11 @@ test("settings dialog returns focus to its opener", async ({ page }) => {
   const opener = page.getByRole("button", { name: "Settings" });
   await opener.click();
   await expect(page.getByRole("dialog", { name: "Game settings" })).toBeVisible();
+  await page.getByLabel("Sound effects").check();
   await page.getByRole("button", { name: "Close settings" }).click();
   await expect(opener).toBeFocused();
+  await opener.click();
+  await expect(page.getByLabel("Sound effects")).not.toBeChecked();
 });
 
 test("routes have distinct titles, one h1, legal content, and a designed 404", async ({ page }) => {
