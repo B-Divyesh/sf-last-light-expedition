@@ -2,7 +2,7 @@
 
 ## Outcome
 
-Repair 3 passes. Last Light Expedition is deployed at <https://last-light-expedition.sociobot.in> with both Verification 2 findings fixed. Independent Verification 3 records a **PASS** with zero findings and zero untested public claims in `.factory/verification-3.md`.
+Last Light Expedition remains deployed at <https://last-light-expedition.sociobot.in>. Fresh strict Review 2 records **FAIL** with one major finding and zero untested public claims in `.factory/review-2.md`: the required `opt-in-run-storage` claim command failed once on the live Pixel 5 project, then passed on rerun. No product code was changed during this review.
 
 - Implementation and deployed candidate: `8ae84cb5c34e59c0193ee14c6677e623ce05e4c4`
 - Documentation/report content: `2828cdc343713e51995e4bb021a83ba6ed0f98f6`
@@ -78,3 +78,13 @@ Fresh strict Review 1 records a **PASS** with zero findings and zero untested pu
 Review 1 reran clean `npm ci`, local `npm test` (5/5 unit and 48/48 browser tests), `npm run build`, every one of the 16 declared claim commands independently against production, and the full 48-test browser suite against production. It inspected and ran the installed fleet helper at `/opt/fleet/lib/verify-url.sh`, completed fresh desktop and phone sample runs to **A shared dawn**, crawled product-owned links, audited 63 visible phone controls for 44 x 44 CSS-pixel targets, and measured fresh mobile Lighthouse results: 100 Performance / 100 Accessibility / 100 Best Practices / 100 SEO (FCP 0.9 s, LCP 1.3 s, CLS 0, TBT 40 ms).
 
 Both new first-screen captures show the job, audience, sample action, three active Camp 1 choices, and no horizontal overflow. The demo label, reset, and real-play exit remain visible through the ending. All prior Verification 1 and 2 findings remain resolved. Evidence is at `/work/.evidence/review-1/`.
+
+## Review 2
+
+Fresh strict Review 2 tested implementation `8ae84cb5c34e59c0193ee14c6677e623ce05e4c4` against documentation baseline `786fac89794f86fe060c4464de1211d1b4dee446`. Live JavaScript and CSS hashes match the candidate, so later report-only commits do not imply a different product image.
+
+Clean `npm ci`, local `npm test` (5/5 unit and 48/48 browser tests), `npm run build`, the installed fleet helper, the full 48-test production suite, desktop and phone end-to-end runs, accessibility checks, route/status checks, privacy isolation, public offer validation, and Lighthouse all passed. Lighthouse mobile scored 100 in Performance, Accessibility, Best Practices, and SEO. Both fresh clients reached **A shared dawn** after six choices at 60 FPS with the demo label still present and no console, page, or cross-origin request errors.
+
+The review is nevertheless **FAIL**. On the first independent invocation of every declared claim command, `BASE_URL=https://last-light-expedition.sociobot.in npm run test:e2e -- --grep @claim:opt-in-run-storage` exited 1 on the phone project because `last-light:run` was still absent immediately after **Save settings**. The desktop project passed. A two-project rerun, five isolated phone reruns, and the later full suite passed, indicating an intermittent save/assertion race rather than a consistently false feature. Strict acceptance does not permit hiding a failed claim command with a retry. Evidence is in `/work/.evidence/review-2/claims/opt-in-run-storage.log`; the passing rerun is alongside it.
+
+No public claim is untested, and every prior Verification 1 and 2 finding remains resolved. The repair should make the save transition and tagged proof deterministic, then rerun this review from a clean setup. Review 2 evidence is under `/work/.evidence/review-2/`.
