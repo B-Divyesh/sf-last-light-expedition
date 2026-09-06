@@ -2,35 +2,35 @@
 
 ## Outcome
 
-Independent Review 3 passes against <https://last-light-expedition.sociobot.in>.
+Independent Verification 7 passes against <https://last-light-expedition.sociobot.in>.
 
 - Implementation reviewed: `7b939bc8375f280ec0c34b62a453db0b7b49b02c` (`7b939bc`).
-- Documentation baseline reviewed: `087682a5da2278be05b6b9744d6f47a98e5f4271` (`087682a`).
+- Documentation baseline reviewed: `35124e17f0a3728991cad62867866f8c6149682f` (`35124e1`).
 - Verdict: **PASS — 0 findings and 0 untested public claims**.
-- The live JavaScript and CSS match the clean candidate build byte-for-byte.
+- Live JavaScript and CSS match the clean candidate build byte-for-byte.
 
-No product code changed during Review 3. The full report is `.factory/review-3.md`.
+No product code changed during Verification 7. The full report is `.factory/verification-7.md`.
 
 ## Verification summary
 
 - Clean install passed with zero audit vulnerabilities.
 - `npm test` passed: 5 unit and 50 browser tests.
-- All 16 claim commands passed separately; production browser claims passed in desktop and phone projects.
-- The full live suite passed 50/50.
+- All 16 claim commands passed separately locally and against production where applicable.
+- The full live suite passed 50/50 across desktop Chromium and Pixel 5 projects.
 - Fresh desktop and phone screens show the job, audience, sample action, and active Camp 1 before scrolling.
-- Independent runs reached the win ending **A shared dawn** and loss ending **The light goes out**. The persistent demo label, reset, exit, and real-data isolation all passed.
-- Offline reload, invalid-state recovery, settings persistence, keyboard/pointer/touch input, focus return, 200% text, 44 px targets, and system reduced motion passed.
-- The historical opt-in storage race passed 10 consecutive live invocations: 20/20 browser-project runs without retry.
-- The installed fleet helper and live Axe integration passed.
-- Fresh Lighthouse: 100 Performance, 100 Accessibility, 100 Best Practices, 100 SEO; LCP 1,439 ms, TBT 63 ms, CLS 0.
+- Independent runs reached the win ending **A shared dawn** and loss ending **The light goes out**. Demo labeling, reset, exit, and real-data isolation passed.
+- Offline reload, invalid-state recovery, settings persistence, keyboard/pointer/touch input, focus return, 200% scale, 44 px targets, and system reduced motion passed.
+- The historical opt-in save race passed 20/20 repeated production project runs without retry.
+- The installed fleet helper, repository verifier, and live Axe integration passed.
+- Fresh Lighthouse: 100 Performance, 100 Accessibility, 100 Best Practices, 100 SEO; LCP 1,276 ms, TBT 19 ms, CLS 0.
 - `npm run build` produced `dist/`: main JavaScript 27.21 KB raw / 9.68 KB gzip and CSS 15.62 KB raw / 4.44 KB gzip.
 - Unknown pages and assets return deliberate HTTP 404 responses; the page route renders designed recovery.
 
-Durable evidence is under `/work/.evidence/review-3/`.
+Durable evidence is under `/work/.evidence/verification-7/`.
 
 ## Earlier findings
 
-All earlier product findings are resolved: active root play, phone first-screen visibility, complete claim coverage, real-play privacy, opt-in storage and erase, 44 × 44 targets, deliberate 404 handling, the saved-run race, and system reduced motion. The authoritative fleet helper exists at `/opt/fleet/lib/verify-url.sh` and passes.
+All earlier product findings remain resolved: active root play, phone first-screen visibility, complete claim coverage, real-play privacy, opt-in save and erase, 44 × 44 targets, deliberate 404 handling, save reliability, and system reduced motion. The authoritative fleet helper exists at `/opt/fleet/lib/verify-url.sh` and passes.
 
 ## Offer and known external limit
 
@@ -48,8 +48,8 @@ npm test
 npm run build
 BASE_URL=https://last-light-expedition.sociobot.in npm run test:e2e
 BASE_URL=https://last-light-expedition.sociobot.in npm run test:a11y
-/opt/fleet/lib/verify-url.sh https://last-light-expedition.sociobot.in /work/.evidence/review-3/helper
+/opt/fleet/lib/verify-url.sh https://last-light-expedition.sociobot.in /work/.evidence/verification-7/helper
 npm run verify:url -- https://last-light-expedition.sociobot.in/
 ```
 
-Run every command in `.factory/claims.json` separately for the claim sweep. The system reduced-motion check must compare rendered marker positions in fresh desktop and phone contexts.
+Run every command in `.factory/claims.json` separately for the claim sweep. Compare rendered marker positions in fresh desktop and phone contexts for the system reduced-motion check.
