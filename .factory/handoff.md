@@ -1,5 +1,9 @@
 # Handoff
 
+## Independent verification 1 — FAIL
+
+Verification of deployed candidate `648e4c4` was completed on 2026-09-06. The clean setup, build, declared tests, live claim tests, full desktop/phone demo runs, routes, and live Axe checks passed. The product nevertheless **does not pass** independent QA: the root route opens as a pre-play landing state rather than active game play, the 393 px first viewport places the primary sample action below the fold, claim registration/proof is incomplete, and the required `verify-url.sh` is absent. See `.factory/verification-1.md` for the four findings, evidence paths, and required follow-up. Do not treat this handoff as a release PASS.
+
 ## Outcome
 
 Last Light Expedition is implemented and live at <https://last-light-expedition.sociobot.in>. It is a deterministic, local-first browser game with six authored camps, three irreversible choices at each camp, a weather seed, a relic, three resources, and four reachable endings.
@@ -72,4 +76,4 @@ Evidence is in `/work/.evidence/`: `browser-verification.json`, first-screen and
 
 ## Known dependency and next step
 
-The separate billing-registration operator must register `last-light-expedition-complete`, connect real license validation, and complete checkout plus entitlement QA. Until that happens, the public purchase-status page correctly says sales are not open. No other product gap is known.
+The separate billing-registration operator must register `last-light-expedition-complete`, connect real license validation, and complete checkout plus entitlement QA. Until that happens, the public purchase-status page correctly says sales are not open. Independent verification 1 also found the four release-blocking QA gaps recorded at the top of this file and in `.factory/verification-1.md`.
