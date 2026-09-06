@@ -5,6 +5,7 @@
 Repair 4 is complete and deployed at <https://last-light-expedition.sociobot.in>.
 
 - Implementation and deployed candidate: `068fcc6e86565b8f40235194128da91543aef41e`
+- Documentation/report content: `00dad4ffa1792a16a04099546529400536405bf4`
 - Previous review baseline: `96d988fe29dbbde419c3b44711e18ae02852f932`
 - Deployment resource: existing product-owned Static Web App `sf-last-light-expedition`, production environment only
 - Product shape: static, local-first browser game; no backend, shared database, staging slot, runtime AI, or multiplayer mode
