@@ -13,7 +13,7 @@ Controls:
 - Pointer or touch: choose any route button.
 - Keyboard: Tab to a route and press Enter or Space.
 - Number keys: press 1, 2, or 3 for the visible routes.
-- Settings: sound starts muted. The reduce-motion setting stops the moving map marker. An unfinished run is saved only after opt-in.
+- Settings: sound starts muted. Device or in-game reduced-motion preferences stop the moving map marker. An unfinished run is saved only after opt-in.
 
 Every run presents six choices and reaches an ending. Restart clears every decision and resets all three resources to 7. The same weather seed and route choices produce the same ending and resource summary.
 

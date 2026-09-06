@@ -9,6 +9,17 @@ async function chooseNames(page: Page, names: string[]) {
   }
 }
 
+async function markerPositions(page: Page): Promise<number[]> {
+  return page.locator(".light-marker").evaluate(async (marker) => {
+    const positions: number[] = [];
+    for (let index = 0; index < 6; index += 1) {
+      positions.push(marker.getBoundingClientRect().left);
+      await new Promise((resolve) => window.setTimeout(resolve, 120));
+    }
+    return positions;
+  });
+}
+
 test("first screen states the job, audience, action, and shows the game", async ({ page }) => {
   await page.goto("/");
   await expect(page.getByRole("heading", { level: 1, name: "Choose a route through a six-camp expedition" })).toBeVisible();
@@ -234,7 +245,7 @@ test("@claim:input-controls pointer, touch, Tab, Enter, Space, and number keys c
   await touchContext.close();
 });
 
-test("@claim:accessible-preferences sound starts muted and reduced motion stops movement", async ({ page }) => {
+test("@claim:accessible-preferences sound starts muted and all reduce-motion preferences stop movement", async ({ page }) => {
   await page.addInitScript(() => {
     (window as typeof window & { audioContextStarts: number }).audioContextStarts = 0;
     Object.defineProperty(window, "AudioContext", {
@@ -254,8 +265,30 @@ test("@claim:accessible-preferences sound starts muted and reduced motion stops 
   await page.waitForTimeout(180);
   const after = await page.locator(".light-marker").getAttribute("style");
   expect(after).toBe(before);
+
+  await page.getByRole("button", { name: "Settings" }).click();
+  await page.getByLabel("Reduce motion").uncheck();
+  await page.getByRole("button", { name: "Save settings" }).click();
+  await expect(page.locator("html")).toHaveAttribute("data-reduce-motion", "false");
+
+  await page.emulateMedia({ reducedMotion: "reduce" });
+  await expect.poll(() => page.evaluate(() => matchMedia("(prefers-reduced-motion: reduce)").matches)).toBe(true);
+  const systemPositions = await markerPositions(page);
+  expect(new Set(systemPositions).size).toBe(1);
+
   await page.getByRole("button", { name: /Share the load/i }).click();
   expect(await page.evaluate(() => (window as typeof window & { audioContextStarts: number }).audioContextStarts)).toBe(0);
+});
+
+test("system reduced-motion preference stops map drift in a fresh browser session", async ({ page }) => {
+  await page.emulateMedia({ reducedMotion: "reduce" });
+  await page.goto("/");
+  await expect.poll(() => page.evaluate(() => matchMedia("(prefers-reduced-motion: reduce)").matches)).toBe(true);
+  const stillPositions = await markerPositions(page);
+  expect(new Set(stillPositions).size).toBe(1);
+
+  await page.getByRole("button", { name: /Share the load/i }).click();
+  await expect(page.getByLabel("Expedition controls").getByText("Camp 2 of 6", { exact: true })).toBeVisible();
 });
 
 test("@claim:finite-fiction play ends without combat and the story is labelled as fiction", async ({ page }) => {

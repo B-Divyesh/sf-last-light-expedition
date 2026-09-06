@@ -85,10 +85,10 @@
   },
   {
     "id": "accessible-preferences",
-    "claim": "Sound starts muted, and the reduce-motion setting stops the moving map marker.",
+    "claim": "Sound starts muted, and in-game or system reduce-motion preferences stop the moving map marker.",
     "where": "Settings, README",
     "test": "npm run test:e2e -- --grep @claim:accessible-preferences",
-    "sandbox": "fresh real route with a counted AudioContext stub; verify muted default, enable reduce motion, and assert the map marker stays fixed while play continues"
+    "sandbox": "fresh real route with a counted AudioContext stub; verify muted default and in-game preference, then emulate the system preference and assert the map marker stays fixed while play continues"
   },
   {
     "id": "finite-fiction",

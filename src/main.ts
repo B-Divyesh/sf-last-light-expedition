@@ -14,6 +14,11 @@ let lastFocused: HTMLElement | null = null;
 let frameHandle = 0;
 let previousFrame = 0;
 let lightOffset = 0;
+const systemMotionQuery = window.matchMedia("(prefers-reduced-motion: reduce)");
+
+function motionIsReduced(): boolean {
+  return settings.reducedMotion || systemMotionQuery.matches;
+}
 
 function route(): string {
   const clean = window.location.pathname.replace(/\/+$/, "");
@@ -308,7 +313,7 @@ function render(routeChange = false): void {
     const title = document.querySelector<HTMLElement>("h1");
     title?.focus({ preventScroll: true });
     document.querySelector<HTMLElement>(".route-announcer")!.textContent = document.title;
-    window.scrollTo({ top: 0, behavior: settings.reducedMotion ? "auto" : "smooth" });
+    window.scrollTo({ top: 0, behavior: motionIsReduced() ? "auto" : "smooth" });
   }
 }
 
@@ -464,7 +469,7 @@ function updateMotionSetting(): void {
 function frame(now: number): void {
   const delta = Math.min(50, now - previousFrame);
   previousFrame = now;
-  if (!document.hidden && !settings.reducedMotion && delta < 50) {
+  if (!document.hidden && !motionIsReduced() && delta < 50) {
     lightOffset = Math.sin(now / 1600) * 6;
     document.querySelector<SVGElement>(".light-marker")?.style.setProperty("transform", `translateX(${lightOffset}px)`);
   }
@@ -493,6 +498,10 @@ window.addEventListener("keydown", (event) => {
   }
 });
 document.addEventListener("visibilitychange", () => { previousFrame = performance.now(); });
+systemMotionQuery.addEventListener("change", () => {
+  previousFrame = performance.now();
+  updateMotionSetting();
+});
 
 if (route() === "/") {
   const saved = loadRun();
