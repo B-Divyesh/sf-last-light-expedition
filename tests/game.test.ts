@@ -1,4 +1,5 @@
 import { describe, expect, it } from "vitest";
+import { readFileSync } from "node:fs";
 import { camps, choose, createGame, endings, weatherSeeds, type EndingId } from "../src/game";
 
 function finish(sequence: string[]) {
@@ -13,10 +14,13 @@ describe("deterministic expedition rules", () => {
     expect(new Set(ids).size).toBe(18);
   });
 
-  it("ships one sample and eight complete-edition seeds", () => {
+  it("@claim:paid-content ships the complete-edition content", () => {
     expect(weatherSeeds.filter((seed) => !seed.paid)).toHaveLength(1);
     expect(weatherSeeds.filter((seed) => seed.paid)).toHaveLength(8);
     expect(new Set(weatherSeeds.map((seed) => seed.relic)).size).toBe(9);
+    const routeLog = readFileSync(new URL("../premium/route-log.html", import.meta.url), "utf8");
+    expect(routeLog.match(/<li>/g)).toHaveLength(6);
+    expect(routeLog).toContain("@media print");
   });
 
   it("replays the same seed and decisions exactly", () => {

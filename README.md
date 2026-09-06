@@ -1,31 +1,33 @@
 # Last Light Expedition
 
-Last Light Expedition is a browser game for players who want one complete short run. Choose one route at each of six camps. Each irreversible choice changes warmth, supplies, or Mara's trust. The route ends with one of four conclusions.
+Last Light Expedition is a browser game for players who want one complete short run. The root page starts active play at Camp 1. Choose one route at each of six camps. Each irreversible choice changes warmth, supplies, or Mara's trust. The route ends with one of four tested conclusions.
 
-The design target is 15–25 minutes at a reading pace. It is a session target, not a timed claim. The game has no combat, endless progression, accounts, analytics, adverts, or tracking.
+The design target is 15–25 minutes at a reading pace. It is a session target, not a timed claim. A run stops after six choices and has no combat or repeatable progression. The story is fiction, not survival advice.
 
 ## Play the sample
 
-Open `/demo` or choose **Try it with sample data** on the first screen. The sample starts at Camp 1 with weather seed `MIST-042` and all resources at 7. Its state stays in memory and is discarded on reset or exit. It never reads or writes real-play storage.
+Open `/demo` or choose **Try it with sample data** on the first screen. The sample starts at Camp 1 with weather seed `MIST-042` and all resources at 7. Its state stays in memory and is discarded on reset or exit. A full demo needs no account, sends no requests outside this site, and stores no demo data.
 
 Controls:
 
 - Pointer or touch: choose any route button.
 - Keyboard: Tab to a route and press Enter or Space.
 - Number keys: press 1, 2, or 3 for the visible routes.
-- Settings: sound starts muted, reduced motion is available, and an unfinished run is saved only after opt-in.
+- Settings: sound starts muted. The reduce-motion setting stops the moving map marker. An unfinished run is saved only after opt-in.
 
-Every run presents six choices and reaches an ending. Restart clears every decision and resets all three resources to 7. The same seed and choices always produce the same result.
+Every run presents six choices and reaches an ending. Restart clears every decision and resets all three resources to 7. The same weather seed and route choices produce the same ending and resource summary.
+
+The map animation targets 60 FPS. It measures between 45 and 75 FPS in the automated Pixel 5 browser profile. Route choices have no timing requirement.
 
 ## Complete edition
 
-The Complete Edition has a **$6 one-time price**. It is not a subscription. It includes eight additional authored weather seeds, eight relic variants, and a printable route log. Sales are not open because billing registration and license validation have not passed product QA.
+The Complete Edition has a **$6 one-time price**. It is not a subscription. It includes eight additional authored weather seeds, eight matching relic variants, and a six-camp printable route log. Sales are not open because billing registration and license validation have not passed product QA.
 
 The public operator metadata is in `.factory/billing-offer.json`. No key, checkout placeholder, or payment-provider credential exists in this repository.
 
 ## Local data and offline use
 
-The game has no accounts, analytics, adverts, or tracking. Real-play settings use the `last-light:settings` localStorage key. An unfinished run uses `last-light:run` only when the player enables **Remember unfinished run**. Settings has an erase action.
+Real play needs no account and sends no gameplay or settings to another service. Real-play settings use the `last-light:settings` localStorage key. An unfinished run uses `last-light:run` only when the player enables **Remember unfinished run**. Settings has an erase action.
 
 After the first successful visit, the service worker reloads the game offline. The demo and its sample content also remain playable offline. The offline claim has an isolated Playwright browser test.
 
@@ -48,9 +50,10 @@ npm run test:unit
 npm run test:e2e
 npm run test:a11y
 npm run build
+./verify-url.sh https://last-light-expedition.sociobot.in/
 ```
 
-`npm test` runs deterministic rule tests and Playwright tests in desktop and phone viewports. Claim-specific commands are listed in `.factory/claims.json`. The production build is written to `dist/`.
+`npm test` runs deterministic rule tests and Playwright tests in desktop and phone viewports. Claim-specific commands are listed in `.factory/claims.json`. The URL verifier checks title, language, landmarks, headings, image alternatives, button names, and console errors. Pass `http://127.0.0.1:4173` while `npm run preview` is running to check a local build. The production build is written to `dist/`.
 
 ## Deploy
 

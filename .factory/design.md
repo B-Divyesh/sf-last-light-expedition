@@ -21,11 +21,11 @@ Headings use Georgia with tight tracking, like an annotated field journal. Body 
 
 ## Shape and layout
 
-The scene fills the first screen. On desktop, a narrow expedition ledger overlays the left edge while the route map stays visible to its right. On phones, the map becomes a short horizontal strip above the current camp choice. Angled route lines and clipped paper corners supply the signature shape. Controls remain at least 44 pixels tall.
+The active expedition fills the first screen. On desktop, the playable ledger occupies the left edge while the route map stays visible to its right. On phones, the ledger comes first so the job, sample action, resources, camp report, and first route choice are visible in the 393 × 727 viewport. The map becomes a short strip after the controls. Angled route lines and clipped paper corners supply the signature shape. Controls remain at least 44 pixels tall.
 
 ## Interaction grammar
 
-A choice previews its exact resource change before it is taken. Once chosen, the old fork closes and the route advances to the next camp. Completed nodes receive a drawn ring. Keyboard players use Tab plus Enter or Space; number keys 1–3 also choose the visible options. The settings dialog traps focus and returns focus to its opener.
+A fresh root visit starts active play at Camp 1. A choice previews its exact resource change before it is taken. Once chosen, the old fork closes and the route advances to the next camp. Completed nodes receive a drawn ring. Keyboard players use Tab plus Enter or Space; number keys 1–3 also choose the visible options. The settings dialog traps focus and returns focus to its opener.
 
 ## Motion
 
@@ -40,4 +40,3 @@ Camps one and two teach the warmth, supplies, and trust trade. Camps three and f
 Use case: `stylized-concept`. Asset: wide landing/game background and social crop. Subject: an empty six-camp mountain route seen obliquely from above, with a tiny amber tent light at the near ridge and a pale observatory at the far ridge. World: a wind-cut valley at the final hour before night. Medium: tactile gouache, charcoal contour marks, subtle paper grain, editorial landscape illustration. Composition: strong S-shaped route from lower left to upper right; calm dark negative space along the left edge for the play ledger. Light: cold blue-green dusk with one restrained amber glow. Palette: night, pine, paper, mist, ember, lichen, rust. Avoid: people, readable text, letters, logos, watermarks, photorealism, neon fantasy, busy stars, gradients, brands, copied game art.
 
 Generation: Azure AI Foundry factory image deployment via `/opt/fleet/lib/gen-image.sh`, 2026-09-06. The generated scene is original to this product. It is disclosed in the footer. SVG route marks, compass, resource symbols, and favicon are hand-authored in this repository under MIT.
-

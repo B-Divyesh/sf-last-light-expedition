@@ -1,7 +1,7 @@
 {
   "name": "last-light-expedition",
   "private": true,
-  "version": "1.0.0",
+  "version": "1.1.0",
   "type": "module",
   "scripts": {
     "dev": "vite",
@@ -10,7 +10,8 @@
     "test": "npm run test:unit && npm run test:e2e",
     "test:unit": "vitest run",
     "test:e2e": "playwright test",
-    "test:a11y": "playwright test --grep @a11y"
+    "test:a11y": "playwright test --grep @a11y",
+    "verify:url": "./verify-url.sh"
   },
   "devDependencies": {
     "@axe-core/playwright": "4.10.2",

@@ -21,6 +21,17 @@ async function inspect(name, viewport, isMobile = false) {
     h1: document.querySelector("h1")?.textContent?.trim(),
     main: Boolean(document.querySelector("main")),
     primary: document.querySelector('[data-action="try-demo"]')?.textContent?.trim(),
+    primary_fully_visible: (() => {
+      const rect = document.querySelector('[data-action="try-demo"]')?.getBoundingClientRect();
+      return Boolean(rect && rect.top >= 0 && rect.bottom <= innerHeight);
+    })(),
+    playable_choice_count: document.querySelectorAll("[data-choice]").length,
+    first_choice_visible_fraction: (() => {
+      const rect = document.querySelector("[data-choice]")?.getBoundingClientRect();
+      if (!rect || rect.height === 0) return 0;
+      const visible = Math.max(0, Math.min(rect.bottom, innerHeight) - Math.max(rect.top, 0));
+      return Number((visible / rect.height).toFixed(3));
+    })(),
     viewport: { width: innerWidth, height: innerHeight },
     scrollWidth: document.documentElement.scrollWidth,
   }));
@@ -52,8 +63,8 @@ async function inspect(name, viewport, isMobile = false) {
   await context.close();
 }
 
-await inspect("desktop", { width: 1440, height: 900 });
-await inspect("phone", { width: 390, height: 844 }, true);
+await inspect("desktop", { width: 1280, height: 720 });
+await inspect("phone", { width: 393, height: 727 }, true);
 await browser.close();
 await writeFile("/work/.evidence/browser-verification.json", `${JSON.stringify(report, null, 2)}\n`);
 process.stdout.write(`${JSON.stringify(report, null, 2)}\n`);

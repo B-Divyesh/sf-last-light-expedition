@@ -1,4 +1,4 @@
-const CACHE = "last-light-v1";
+const CACHE = "last-light-v2";
 const SHELL = [
   "/",
   "/demo",

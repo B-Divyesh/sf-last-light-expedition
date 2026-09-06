@@ -9,6 +9,10 @@
       ol { padding-left: 24px; }
       li { min-height: 90px; margin: 12px 0; border-bottom: 1px solid #53645e; }
       footer { margin-top: 32px; font-size: 12px; }
+      @media print {
+        body { max-width: none; margin: 12mm; color: #000; }
+        li { break-inside: avoid; }
+      }
     </style>
   </head>
   <body>

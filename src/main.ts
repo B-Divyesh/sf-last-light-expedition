@@ -5,7 +5,7 @@ import { clearRun, defaultSettings, loadRun, loadSettings, saveRun, saveSettings
 const app = document.querySelector<HTMLDivElement>("#app")!;
 if (!app) throw new Error("App root is missing");
 
-const build = "1.0.0";
+const build = "1.1.0";
 const origin = "https://last-light-expedition.sociobot.in";
 let game: GameState | null = null;
 let demoMode = false;
@@ -119,28 +119,6 @@ function routeMap(state: GameState | null): string {
     </div>`;
 }
 
-function introPanel(): string {
-  return `
-    <section class="intro-panel" aria-labelledby="page-title">
-      <p class="eyebrow">Last Light Expedition</p>
-      <h1 id="page-title" tabindex="-1">Choose a route through six camps</h1>
-      <p class="lead">For browser players who want one complete run without an endless grind.</p>
-      <div class="hero-actions">
-        <button class="primary" type="button" data-action="try-demo">Try it with sample data</button>
-        <span>Starts at Camp 1 with a fixed weather seed.</span>
-      </div>
-      <ul class="plain-facts">
-        <li>Works offline after the first visit.</li>
-        <li>No account or tracking. Optional saves stay in this browser.</li>
-        <li>One weather seed is free. Complete edition: $6 once.</li>
-      </ul>
-      <div class="secondary-actions">
-        <button class="secondary" type="button" data-action="start-real">Start a new expedition</button>
-        <button class="secondary" type="button" data-action="open-settings" aria-haspopup="dialog">Settings</button>
-      </div>
-    </section>`;
-}
-
 function choiceList(state: GameState): string {
   const camp = camps[state.campIndex];
   if (!camp) return "";
@@ -183,15 +161,31 @@ function endingPanel(state: GameState): string {
 function gamePanel(state: GameState): string {
   return `
     <section class="game-ledger" aria-label="Expedition controls">
-      <h1 id="page-title" tabindex="-1">Choose a route through six camps</h1>
-      <div class="ledger-tools">
-        <button class="icon-button" type="button" data-action="open-settings" aria-haspopup="dialog">Settings</button>
-        <button class="icon-button danger-link" type="button" data-action="restart">Restart</button>
+      <div class="play-intro">
+        <p class="eyebrow">Last Light Expedition</p>
+        <h1 id="page-title" tabindex="-1">Choose a route through a six-camp expedition</h1>
+        <p class="lead">For browser players who want one complete authored run with irreversible resource choices and four tested endings.</p>
+        ${demoMode ? '<p class="sample-note">This sample starts at Camp 1 with a fixed weather seed and saves nothing.</p>' : `
+        <div class="hero-actions">
+          <button class="primary" type="button" data-action="try-demo">Try it with sample data</button>
+          <span>Opens a fixed run. Saves nothing.</span>
+        </div>
+        <ul class="plain-facts" aria-label="Game facts">
+          <li>Offline after one visit.</li>
+          <li>Saves are local.</li>
+          <li>Free seed. Complete edition: $6 once.</li>
+        </ul>`}
       </div>
-      <div class="resources" aria-label="Current resources">
-        ${resourceMeter("warmth", state.resources.warmth)}
-        ${resourceMeter("supplies", state.resources.supplies)}
-        ${resourceMeter("trust", state.resources.trust)}
+      <div class="ledger-status">
+        <div class="resources" aria-label="Current resources">
+          ${resourceMeter("warmth", state.resources.warmth)}
+          ${resourceMeter("supplies", state.resources.supplies)}
+          ${resourceMeter("trust", state.resources.trust)}
+        </div>
+        <div class="ledger-tools">
+          <button class="icon-button" type="button" data-action="open-settings" aria-haspopup="dialog">Settings</button>
+          <button class="icon-button danger-link" type="button" data-action="restart">Restart</button>
+        </div>
       </div>
       <div id="game-status" class="game-status" aria-live="polite"></div>
       ${state.ending ? endingPanel(state) : choiceList(state)}
@@ -199,13 +193,13 @@ function gamePanel(state: GameState): string {
 }
 
 function landing(): string {
+  if (!game) game = createGame();
   const currentGame = game;
-  const playing = currentGame !== null;
   return `
     ${header()}${demoBanner()}
     <main id="main">
-      <div class="game-stage ${playing ? "is-playing" : "is-intro"}">
-        ${currentGame ? gamePanel(currentGame) : introPanel()}
+      <div class="game-stage is-playing">
+        ${gamePanel(currentGame)}
         ${routeMap(currentGame)}
       </div>
       ${!demoMode ? `
@@ -224,7 +218,7 @@ function landing(): string {
         <p class="section-number">02</p>
         <div>
           <h2 id="limits-heading">Local data and limits</h2>
-          <p>The game has no accounts, analytics, adverts, combat, or endless progression. It does not present real survival advice.</p>
+          <p>A run stops after six choices and has no combat or repeatable progression. The story is fiction, not survival advice.</p>
           <p>Saving an unfinished run is optional. You can erase it from Settings or your browser controls.</p>
         </div>
       </section>
@@ -233,7 +227,7 @@ function landing(): string {
         <div>
           <h2 id="price-heading">Complete edition</h2>
           <p class="price"><strong>$6</strong> one-time price</p>
-          <p>Includes eight more authored weather seeds, eight relic variants, and a printable route log.</p>
+          <p>Includes eight additional authored weather seeds, eight relic variants, and a printable route log.</p>
           <p class="availability"><strong>Sales are not open yet.</strong> Billing and license activation must pass product QA first.</p>
           <a class="secondary button-link" href="/license" data-link>Check purchase availability</a>
         </div>
@@ -265,7 +259,7 @@ function legalPage(kind: "privacy" | "terms" | "license"): string {
       title: "Privacy — Last Light Expedition",
       heading: "Your game data stays in your browser",
       description: "Read how Last Light Expedition handles local game settings and saved runs.",
-      body: `<section><h2>Data this game stores</h2><p>The game stores settings only after you change them. It stores an unfinished run only when you enable that setting.</p><p>Demo play uses memory only. Resetting or leaving the demo discards its state.</p></section><section><h2>Data this game sends</h2><p>The game has no accounts, analytics, advertising, or tracking. The host receives standard web request logs when it serves a file.</p></section><section><h2>Erase your data</h2><p>Open Settings and choose “Erase saved run.” You can also clear this site's browser storage.</p></section><section><h2>Privacy requests</h2><p>There is no account record to export or correct. Email <a href="mailto:privacy@sociobot.in">privacy@sociobot.in</a> with questions about host request logs.</p></section>`,
+      body: `<section><h2>Data this game stores</h2><p>The game stores settings only after you change them. It stores an unfinished run only when you enable that setting.</p><p>Demo play uses memory only. Resetting or leaving the demo discards its state.</p></section><section><h2>Data this game sends</h2><p>A full run needs no account and sends no gameplay or settings to another service. The host receives standard web request logs when it serves a file.</p></section><section><h2>Erase your data</h2><p>Open Settings and choose “Erase saved run.” You can also clear this site's browser storage.</p></section><section><h2>Privacy requests</h2><p>There is no account record to export or correct. Email <a href="mailto:privacy@sociobot.in">privacy@sociobot.in</a> with questions about host request logs.</p></section>`,
     },
     terms: {
       title: "Terms — Last Light Expedition",
@@ -299,7 +293,7 @@ function render(routeChange = false): void {
     app.innerHTML = landing();
   } else if (path === "/") {
     demoMode = false;
-    setMetadata("Last Light Expedition — choose a six-camp route", "Choose irreversible route decisions across six camps and reach one of four endings in a short browser expedition.", "/");
+    setMetadata("Last Light Expedition — play a six-camp route", "Choose irreversible resource decisions across six camps and reach one of four endings in a short browser expedition.", "/");
     app.innerHTML = landing();
   } else if (path === "/privacy" || path === "/terms" || path === "/license") {
     demoMode = false;
@@ -483,7 +477,9 @@ document.addEventListener("visibilitychange", () => { previousFrame = performanc
 
 if (route() === "/") {
   const saved = loadRun();
-  if (saved && settings.rememberRun && saved.seedId === "MIST-042" && saved.campIndex >= 0 && saved.campIndex <= 6) game = saved;
+  game = saved && settings.rememberRun && saved.seedId === "MIST-042" && saved.campIndex >= 0 && saved.campIndex <= 6
+    ? saved
+    : createGame();
 }
 render();
 frameHandle = requestAnimationFrame(frame);

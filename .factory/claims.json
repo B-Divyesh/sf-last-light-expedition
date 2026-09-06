@@ -36,10 +36,10 @@
   },
   {
     "id": "local-privacy",
-    "claim": "The game has no accounts, analytics, adverts, or tracking.",
-    "where": "first screen, Local data and limits, Privacy, README",
+    "claim": "A full demo needs no account, sends no requests outside this site, and stores no demo data.",
+    "where": "first screen, Privacy, README",
     "test": "npm run test:e2e -- --grep @claim:local-privacy",
-    "sandbox": "record every request through a full demo run and assert every request is same-origin"
+    "sandbox": "fresh demo route; finish a run; assert no sign-in fields, no non-GET or cross-origin requests, no cookies, and empty localStorage"
   },
   {
     "id": "settings-persist",
@@ -54,5 +54,47 @@
     "where": "first screen, Complete edition, Terms, Purchase status, README",
     "test": "npm run test:e2e -- --grep @claim:one-time-offer",
     "sandbox": "compare the public offer response with rendered price and purchase-status route; assert no checkout is offered"
+  },
+  {
+    "id": "deterministic-outcome",
+    "claim": "The same weather seed and route choices produce the same ending and resource summary.",
+    "where": "README",
+    "test": "npm run test:e2e -- --grep @claim:deterministic-outcome",
+    "sandbox": "fresh demo route; play the same six choices twice after reset; compare the rendered ending and resource summary"
+  },
+  {
+    "id": "input-controls",
+    "claim": "Route choices work with pointer, touch, Tab plus Enter or Space, and number keys 1–3.",
+    "where": "README",
+    "test": "npm run test:e2e -- --grep @claim:input-controls",
+    "sandbox": "fresh demo routes; advance from Camp 1 with each advertised input method, including an isolated touch-enabled phone context"
+  },
+  {
+    "id": "accessible-preferences",
+    "claim": "Sound starts muted, and the reduce-motion setting stops the moving map marker.",
+    "where": "Settings, README",
+    "test": "npm run test:e2e -- --grep @claim:accessible-preferences",
+    "sandbox": "fresh real route with a counted AudioContext stub; verify muted default, enable reduce motion, and assert the map marker stays fixed while play continues"
+  },
+  {
+    "id": "finite-fiction",
+    "claim": "A run stops after six choices, has no combat controls, and labels the story as fiction rather than survival advice.",
+    "where": "Local data and limits, Terms, README",
+    "test": "npm run test:e2e -- --grep @claim:finite-fiction",
+    "sandbox": "fresh demo route; inspect each playable choice, finish six camps, assert choice controls stop at the ending, and verify the terms label"
+  },
+  {
+    "id": "paid-content",
+    "claim": "The $6 complete edition contains eight additional weather seeds, eight matching relic variants, and a six-camp printable route log.",
+    "where": "Complete edition, README, public offer metadata",
+    "test": "npm run test:unit -- --testNamePattern @claim:paid-content",
+    "sandbox": "inspect the packaged game data and private paid deliverable; count paid seeds, unique relics, printable camp rows, and print styling"
+  },
+  {
+    "id": "frame-rate",
+    "claim": "The map animation targets 60 FPS and measures between 45 and 75 FPS in the Pixel 5 browser profile.",
+    "where": "README",
+    "test": "npm run test:e2e -- --grep @claim:frame-rate",
+    "sandbox": "fresh isolated Pixel 5 browser context; sample 90 requestAnimationFrame timestamps and assert the measured 45–75 FPS range"
   }
 ]
