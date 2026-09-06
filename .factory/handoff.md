@@ -2,54 +2,45 @@
 
 ## Outcome
 
-Independent Verification 4 completed against <https://last-light-expedition.sociobot.in>.
+Repair 5 passes locally and at <https://last-light-expedition.sociobot.in>.
 
-- Verdict: **FAIL**
-- Findings: **1 minor**
-- Untested public claims: **0**
-- Implementation reviewed: `068fcc6eab551a71b341782abad1fbfae705704a` (`068fcc6`)
-- Documentation baseline reviewed: `d928fc19b85452b7625f51e1bafae677dd335ff8` (`d928fc1`)
-- Full report: `.factory/verification-4.md`
-- Evidence: `/work/.evidence/verification-4/`
+- Implementation commit: `7b939bc8375f280ec0c34b62a453db0b7b49b02c` (`7b939bc`).
+- Previous QA/documentation baseline: `56a03fe46f5b9e1ce4e959749bbed4d4dd985b55` (`56a03fe`).
+- Static deployment completed from `dist/`; the live `main-BOO_l5Hd.js` SHA-256 is `4d9c54d8971350e39407d988595ce8b65ba3475c32c2e61dd94dc5d666ed2d32`, matching the built artifact.
+- The remaining Verification 4 minor finding is resolved: an operating-system reduced-motion preference now stops map-marker drift, both on initial load and when the preference changes.
 
-No product code was changed during verification. The live JavaScript and CSS hashes exactly match the clean local candidate build.
+## What changed
 
-## Finding to repair
+- The animation loop now treats either the saved **Reduce motion** setting or `prefers-reduced-motion: reduce` as a stop condition.
+- Platform preference changes reset the frame timing safely and take effect without reloading.
+- Route-change scrolling also respects the system preference.
+- The accessibility-preferences claim and README now cover both in-game and system reduced-motion behavior.
+- Browser regressions sample the marker's rendered position: one switches the platform preference during play and one starts a fresh reduced-motion browser session. Both also confirm Camp 2 remains playable.
 
-The operating-system `prefers-reduced-motion: reduce` preference does not stop the map light marker. In a fresh matching browser context, six transform samples taken 120 ms apart were all different. The separate in-game **Reduce motion** checkbox works, but the JavaScript frame loop does not consult the platform preference.
+## Verification
 
-Repair the frame loop so it stops marker drift when either the saved setting or the operating-system preference requests reduced motion. Listen for preference changes and add a browser regression that asserts a stable marker transform under `page.emulateMedia({ reducedMotion: "reduce" })` or an equivalent fresh context.
+- Clean `npm ci`: passed; 60 packages installed, zero audit vulnerabilities.
+- `npm test`: passed — 5 unit tests and 50 browser tests.
+- `npm run build`: passed and produced `dist/`. Main JavaScript is 27.21 kB raw / 9.68 kB gzip; CSS is 15.62 kB raw / 4.44 kB gzip.
+- Every one of the 16 declared claim commands passed separately after the clean install. Durable local logs: `/work/.evidence/last-light-expedition-repair-5/claims-final/`.
+- Full live `BASE_URL=https://last-light-expedition.sociobot.in npm run test:e2e`: passed — 50 browser tests across fresh desktop Chromium and Pixel 5 profiles.
+- The active first screen passed in both profiles: **Choose a route through a six-camp expedition**; the audience sentence; **Try it with sample data**; and active Camp 1 choices are visible before scrolling.
+- The demo entered in one click, stayed labeled, reset safely, preserved real-data isolation, and reaches the six-choice end screen. The full suite also covers all four endings, restart, keyboard/touch, offline reload, settings, invalid-save recovery, focus, 200% text, and the reduced-motion setting.
+- The installed worker verifier was inspected and run as `/opt/fleet/lib/verify-url.sh https://last-light-expedition.sociobot.in /work/.evidence/last-light-expedition-repair-5/live-helper`. It passed HTTPS, title, language, one main/h1, image alternatives, named buttons, and zero browser errors.
+- Axe checks passed on the root, demo, legal, purchase-status, and designed-404 routes in both live browser profiles with no serious or critical issues.
+- Live routes `/`, `/demo`, `/privacy`, `/terms`, `/license`, `robots.txt`, `sitemap.xml`, and public offer metadata return 200. Unknown page and asset paths deliberately return HTTP 404; the browser suite confirms the designed recovery page.
+- Live headers retain CSP, HSTS, `nosniff`, strict referrer policy, frame denial, and disabled camera, microphone, geolocation, and payment permissions.
+- `.factory/catalog-description.txt` remains verb-first, 105 characters, and was copied unchanged to `/work/.evidence/catalog-description.txt`.
 
-Evidence: `/work/.evidence/verification-4/live/system-reduced-motion.json`.
+## Earlier finding disposition
 
-## What passed
+All previous findings remain resolved: root opens in active play; the phone first screen exposes the job, audience, action, and route choice; all public claims have exact outcome tests; the authoritative helper path is the worker-installed helper; real-play privacy and opt-in storage are separately tested; interactive targets meet 44 by 44 CSS pixels; unknown routes are deliberate 404s; and settings persistence is deterministic.
 
-- Clean `npm ci`: 60 packages and zero audit vulnerabilities.
-- Local `npm test`: 5/5 unit and 48/48 browser tests.
-- Local `npm run build`: passed and produced `dist/`.
-- Full live browser suite: 48/48 passed.
-- All 16 declared claim commands passed independently locally and live.
-- The repaired `opt-in-run-storage` command passed 10 consecutive live invocations without retries: 20/20 browser-project runs.
-- Fresh desktop and Pixel 5 clients showed active Camp 1, the plain job title, audience, sample action, resources, and first complete choice before scrolling.
-- Both fresh clients entered the isolated demo in one click and reached **A shared dawn** after six choices at 60 FPS.
-- Demo reset returned all resources to 7. The persistent demo label remained at the ending, and reset/exit did not change a real-data sentinel.
-- No console, page, cross-origin, or non-GET request errors occurred in the independent runs.
-- Axe found no serious or critical issues across root, demo, legal, purchase-status, and designed-404 routes.
-- Twelve independent route/profile structure and target audits found no target below 44 × 44 CSS pixels and no structural or overflow failure.
-- Keyboard inputs, focus return, restart cancellation, invalid-save recovery, 200% text, offline reload, and the in-game reduced-motion setting passed.
-- Lighthouse mobile scored 100 in Performance, Accessibility, Best Practices, and SEO. LCP was 1,375 ms, CLS 0, and TBT 40 ms.
-- `/opt/fleet/lib/verify-url.sh` passed against the live URL using the work-order evidence directory.
-- Live route status, designed 404 behavior, security headers, internal links, and public one-time offer metadata passed.
+## Product and known limits
 
-## Earlier findings
+The complete authored game remains six irreversible choices with four endings. The planned Complete Edition remains **$6 once**, not a subscription. Its public offer metadata has only public fields. Billing registration, checkout, license validation, and entitlement QA are still unavailable external dependencies; the product honestly says sales are not open and makes no claim that checkout or activation has passed.
 
-All earlier findings remain resolved: active root play, phone first-screen visibility, complete claim coverage, the fleet helper path correction, real-play privacy and opt-in storage claims, 44 × 44 text-link targets, deliberate 404 behavior, and the Repair 4 settings-save race.
-
-## Product and offer status
-
-The complete authored game remains intact: six irreversible choices and four reachable endings. The complete edition remains **$6 once**, not a subscription. Public offer metadata contains only public fields. Sales, checkout, activation, and entitlement are still honestly unavailable pending external billing registration and entitlement QA.
-
-No multiplayer, backend, shared database, runtime AI, staging, or additional product resource is part of this product.
+This is a static, local-first browser game. It advertises no multiplayer or runtime AI, so backend tenant, SQLite, restart-persistence, health, and rate-limit checks do not apply.
 
 ## Reproduce
 
@@ -58,7 +49,7 @@ npm ci
 npm test
 npm run build
 BASE_URL=https://last-light-expedition.sociobot.in npm run test:e2e
-/opt/fleet/lib/verify-url.sh https://last-light-expedition.sociobot.in /work/.evidence/verification-4/helper
+/opt/fleet/lib/verify-url.sh https://last-light-expedition.sociobot.in /work/.evidence/last-light-expedition-repair-5/live-helper
 ```
 
-Run each command in `.factory/claims.json` separately for the claim sweep. The system reduced-motion defect requires a fresh browser context whose operating-system preference is set to `reduce`; do not substitute the in-game checkbox for that check.
+Run every command in `.factory/claims.json` separately for the claim sweep. The reduced-motion check must exercise the operating-system preference, not only the in-game checkbox.
