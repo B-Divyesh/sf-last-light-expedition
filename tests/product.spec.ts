@@ -67,6 +67,8 @@ test("@claim:demo-isolation demo label, reset, and settings never alter real dat
   await page.getByRole("button", { name: "Save settings" }).click();
   await page.getByRole("button", { name: "Reset demo" }).click();
   await expect(page.getByLabel("Expedition controls").getByText("Camp 1 of 6", { exact: true })).toBeVisible();
+  await chooseNames(page, ["Share the load", "Follow Mara", "Rest in the shallow cave", "Use the signal lens", "Let Mara decide", "Work the hinge together"]);
+  await expect(page.getByText("Demo — sample data, nothing is saved")).toBeInViewport({ ratio: 1 });
   expect(await page.evaluate(() => ({ ...localStorage }))).toEqual({ "real:sentinel": "unchanged" });
   await page.getByRole("button", { name: "Start for real" }).click();
   await expect(page.getByText("Demo — sample data, nothing is saved")).toHaveCount(0);

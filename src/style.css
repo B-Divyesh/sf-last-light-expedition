@@ -301,7 +301,7 @@ dialog form { padding: 24px; }
   .site-header nav { max-width: 160px; gap: 0 12px; }
   .wordmark svg { width: 28px; }
   .wordmark span { font-size: .9rem; }
-  .demo-banner { position: relative; padding: 8px 16px; align-items: flex-start; flex-direction: column; gap: 2px; }
+  .demo-banner { position: sticky; padding: 8px 16px; align-items: flex-start; flex-direction: column; gap: 2px; }
   .demo-banner > div { width: 100%; }
   .demo-banner .text-button { flex: 1; }
   .site-header nav { max-width: 172px; flex-wrap: nowrap; }

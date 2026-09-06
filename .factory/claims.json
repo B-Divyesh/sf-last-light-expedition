@@ -22,10 +22,10 @@
   },
   {
     "id": "demo-isolation",
-    "claim": "Demo play is not saved and does not change real browser data.",
+    "claim": "Demo play stays visibly labeled, is not saved, and does not change real browser data.",
     "where": "demo banner, Privacy, README",
     "test": "npm run test:e2e -- --grep @claim:demo-isolation",
-    "sandbox": "seed a real-data sentinel; play, change demo settings, and reset; assert localStorage is unchanged"
+    "sandbox": "seed a real-data sentinel; play, change settings, reset, finish a run, and assert the label remains in view and localStorage stays unchanged"
   },
   {
     "id": "offline-reload",
