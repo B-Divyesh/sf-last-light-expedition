@@ -1,0 +1,37 @@
+{
+  "slug": "last-light-expedition",
+  "title": "Last Light Expedition",
+  "territory": "games-creative",
+  "user": "Roguelike-curious browser players who want one complete 20-minute atmospheric run instead of an endless grind or a commitment-heavy dungeon crawler.",
+  "evidence": [
+    {
+      "url": "https://hn.algolia.com/api/v1/items/49107487",
+      "date": "2026-07-30",
+      "quote_or_summary": "A Dark Cave's maker explicitly focuses on atmosphere over graphics; an HN player reports it consumed 20 minutes of a work day."
+    },
+    {
+      "url": "https://hn.algolia.com/api/v1/items/46448670",
+      "date": "2025-12-31",
+      "quote_or_summary": "qq-pwn is presented as a browser incremental roguelike and asks for feedback on progression, showing browser players are actively evaluating concise progression loops."
+    },
+    {
+      "url": "https://a-dark-cave.com",
+      "date": "2026-07-30",
+      "quote_or_summary": "Fetched A Dark Cave page describes survival and settlement building, corroborating current browser demand for atmospheric progression."
+    }
+  ],
+  "recurrence": "Recent browser roguelike/idler launches center atmosphere and progression, while one observed play session lands exactly in a short-break-sized window.",
+  "current_workaround": "Start a large roguelike, use an idle game with no endpoint, or play an atmospheric game that lacks a satisfying short conclusion.",
+  "incumbents_and_gap": "A Dark Room descendants favor long discovery; incremental roguelikes can blur active decisions. A deliberately finished, replayable expedition is underrepresented on the open web.",
+  "smallest_useful_product": "A 15-25 minute text-and-map expedition. Each of six camps asks one irreversible choice between warmth, supplies, and a companion's trust; one weather seed and one relic alter the route. Every run reaches one of four endings. Non-goals: endless prestige, live service, procedural prose generation, or combat complexity.",
+  "success_measure": "At least 45% of starters reach an ending and 25% begin a new seed after their first ending.",
+  "artifact_class": "browser-game",
+  "monetization": "one-time \u2014 a clear ending and offline-friendly build are better aligned with a paid small game than retention mechanics.",
+  "constraints": "Original writing/art only; local save must be optional and resettable; avoid presenting survival choices as real-world advice.",
+  "est_build_effort": "M",
+  "scale": "small (default)",
+  "why_distinct": "It treats a run as a complete story with an ending, not a disguised idle treadmill.",
+  "confidence": 4,
+  "state": "RESEARCHED",
+  "research_run": "research-browser-games-0901-204325-2"
+}
