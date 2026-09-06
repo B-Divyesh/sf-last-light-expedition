@@ -2,7 +2,7 @@
 
 ## Outcome
 
-Repair 3 passes. Last Light Expedition is deployed at <https://last-light-expedition.sociobot.in> with both Verification 2 findings fixed.
+Repair 3 passes. Last Light Expedition is deployed at <https://last-light-expedition.sociobot.in> with both Verification 2 findings fixed. Independent Verification 3 records a **PASS** with zero findings and zero untested public claims in `.factory/verification-3.md`.
 
 - Implementation and deployed candidate: `8ae84cb5c34e59c0193ee14c6677e623ce05e4c4`
 - Documentation/report content: `2828cdc343713e51995e4bb021a83ba6ed0f98f6`
@@ -62,3 +62,11 @@ Evidence is under `/work/.evidence/repair-3/`. Public billing metadata and the 1
 ## Known external dependency
 
 The separate billing-registration operator must register `last-light-expedition-complete`, connect real license validation, and complete checkout plus entitlement QA. Until then, `/license` correctly states that purchases are unavailable. No checkout or activation is claimed as passing.
+
+## Verification 3 handoff
+
+Independent QA reviewed implementation `8ae84cb5c34e59c0193ee14c6677e623ce05e4c4` and documentation commit `f5ff38fdfe96ab2820b3a3c50c1648e31e42f424`. The only post-implementation change is documentation. The deployed JavaScript and CSS hashes match the candidate build.
+
+Verification reran `npm ci`, `npm test`, `npm run build`, every one of the 16 claim commands, and the full 48-test suite against the production URL. It also used the installed fleet command `/opt/fleet/lib/verify-url.sh https://last-light-expedition.sociobot.in /work/.evidence/verification-3/helper`, captured independent desktop and phone sample runs, performed Axe through the live test suite, and ran Lighthouse mobile with the worker's installed Chromium. Results: 5/5 local unit tests, 48/48 local browser tests, 48/48 live browser tests, all 16 claims passing, no serious/critical Axe issues, helper pass, and Lighthouse 100 Performance / 100 Accessibility / 100 Best Practices / 100 SEO.
+
+The production game begins directly at Camp 1 on desktop and phone. Both fresh browser clients saw the job, audience, sample action, and active choices before scrolling; each completed the sample to **A shared dawn** in six choices, with the visible demo label and no console, page, or cross-origin request errors. All Verification 1 and 2 findings are resolved. Evidence is stored outside the repository at `/work/.evidence/verification-3/`.
