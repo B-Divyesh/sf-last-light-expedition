@@ -2,38 +2,63 @@
 
 ## Outcome
 
-Independent Verification 2 completed against <https://last-light-expedition.sociobot.in>.
+Repair 3 passes. Last Light Expedition is deployed at <https://last-light-expedition.sociobot.in> with both Verification 2 findings fixed.
 
-- Candidate implementation: `27fd6407972215f43a19dc32396f014f9ae627dd`
-- Documentation baseline reviewed: `252148d52974c5aec1dda0fee4116fea44b559d8`
-- Verdict: **FAIL**
-- Findings: **2** (one major, one minor)
-- Untested public claims: **2**
+- Implementation and deployed candidate: `8ae84cb5c34e59c0193ee14c6677e623ce05e4c4`
+- Documentation/report commit: recorded by the report-only follow-up commit
+- Deployment resource: existing product-owned Static Web App `sf-last-light-expedition`, production environment only
+- Artifact shape: static local-first browser game; no backend, shared database, staging slot, or multiplayer mode
 
-No product code was changed. The full report is `.factory/verification-2.md`.
+The researched product remains intact: active six-camp play begins on the first screen, each choice is irreversible, every run reaches one of four endings, and the one-click demo stays isolated in memory. The complete edition remains **$6 once**, not a subscription. Sales remain closed until the separate operator completes billing registration and entitlement QA.
 
-## What passed
+## Finding disposition
 
-The Repair 2 gameplay changes are live. Fresh desktop and 393 × 727 phone clients show the job, audience, sample action, active Camp 1 resources/report, and all three choices before scrolling. Independent desktop and phone runs reached **A shared dawn** after six irreversible choices. Demo reset, exit, isolation, end-screen labeling, real opt-in persistence, erase, invalid-state recovery, keyboard input, focus, reduced motion, offline reload, legal routes, designed 404, and public one-time offer behavior all worked.
+1. **Two public real-data promises lacked declared claim tests — fixed.** `.factory/claims.json` now declares 16 claims. `@claim:real-play-privacy` changes a setting, finishes a real run, and proves the flow has no account fields, cookies, non-GET requests, or cross-origin requests. `@claim:opt-in-run-storage` proves a default choice is not stored, opt-in play resumes at Camp 2, erase removes the run, and the next reload starts at Camp 1. Every claim ID appears in exactly one tagged test.
+2. **Play, Price, and privacy email targets were below 44 × 44 CSS pixels — fixed.** Shared header links now have a 44-pixel minimum width and height. The email link has a 44-pixel minimum height. A browser regression measures the rendered boxes on desktop and at 393 × 727. Live measurements are Play 44 × 44, Price 44 × 44, phone Play 44 × 44, and email 161.77 × 44 CSS pixels.
 
-All 14 declared claim commands passed independently. Clean local results were 5/5 unit and 42/42 browser tests; the live suite was 42/42. Live Axe passed. The fleet-installed `/opt/fleet/lib/verify-url.sh` passed. Lighthouse scored 100 in Performance, Accessibility, Best Practices, and SEO. Live JavaScript and CSS hashes match the candidate build.
+All earlier findings were also rechecked. Root play is active without an entry gate, the phone first screen shows the job, audience, sample action, resources, report, and first choice, all earlier claim categories remain tagged, the fleet-installed URL helper passes, and unknown pages and assets return deliberate HTTP 404 responses with the designed recovery page.
 
-## Findings to repair
+## Verification
 
-1. Add declared, exactly tagged outcome coverage for two public promise categories: real-play no-account/no-cross-origin behavior, and opt-in unfinished-run persistence plus erase. Current manual checks pass, but the existing `local-privacy` test covers demo only and `settings-persist` covers only a setting.
-2. Increase the effective target size of the header **Play** link (about 33 × 44), desktop **Price** link (about 39 × 44), and privacy email link (about 162 × 19) to at least 44 × 44 CSS pixels.
-
-After repair, redeploy the product candidate and repeat independent Verification 2. The separate billing operator must still register `last-light-expedition-complete` and validate checkout plus entitlement before sales can open.
-
-## Reproduce
+The documented clean setup and local gates were run:
 
 ```sh
 npm ci
 npm test
 npm run build
-/opt/fleet/lib/verify-url.sh https://last-light-expedition.sociobot.in /work/.evidence/verification-2/live
-BASE_URL=https://last-light-expedition.sociobot.in npm run test:e2e
-BASE_URL=https://last-light-expedition.sociobot.in npm run test:a11y
 ```
 
-Run every command in `.factory/claims.json` separately. Evidence for this pass is under `/work/.evidence/verification-2/`, including screenshots, claim logs, browser checks, route/link results, storage checks, runtime hashes, Axe, and Lighthouse output.
+- `npm ci`: 60 packages, zero audit vulnerabilities.
+- Unit tests: 5/5 passed.
+- Browser tests: 48/48 passed across desktop Chromium and Pixel 5.
+- Every command in `.factory/claims.json`: all 16 passed independently; logs are in `/work/.evidence/repair-3/claims/`.
+- Claim registry scan: 16 unique IDs, exactly one tagged test per ID, and no undeclared test tags.
+- Build: JavaScript 26.50 KB raw / 9.51 KB gzip; CSS 15.62 KB raw / 4.44 KB gzip; WebP scene 66.10 KB.
+- The existing copy audit was rechecked because public copy did not change. Its landing sentences remain at most 22 words with no banned marketing term.
+
+Production checks against the cold HTTPS origin:
+
+- Full browser suite: 48/48 passed.
+- Axe: 2/2 passed with no serious or critical findings across root, demo, privacy, terms, purchase status, and designed 404 routes.
+- `/opt/fleet/lib/verify-url.sh`: passed with HTTP 200, title, `lang=en`, one h1, one main, complete image alternatives, named buttons, and zero browser errors.
+- Fresh desktop and phone clients each entered the demo, completed six choices, and reached **A shared dawn**. The demo label and exit/reset actions remain visible on the phone end screen.
+- First-screen evidence at 1280 × 720 and 393 × 727 shows the headline, audience, sample action, three active choices, and no horizontal overflow. The first choice is fully visible in both viewports.
+- Captured runs measured 59.3 FPS on desktop and 60 FPS on the phone profile. They produced no console errors, page errors, or cross-origin requests.
+- Lighthouse mobile: Performance 100, Accessibility 100, Best Practices 100, SEO 100; FCP 954 ms, LCP 1,503 ms, CLS 0, TBT 64 ms.
+- `/`, `/demo`, `/privacy`, `/terms`, and `/license` return 200. Unknown page and asset requests return 404 as intended.
+- Live JavaScript and CSS SHA-256 hashes match the local candidate build. Public offer metadata matches `.factory/billing-offer.json`.
+- CSP, HSTS, `nosniff`, strict referrer policy, frame denial, and disabled camera, microphone, geolocation, and payment permissions remain present.
+
+Evidence is under `/work/.evidence/repair-3/`. Public billing metadata and the 104-character verb-first catalog description were copied to `/work/.evidence/billing-offer.json` and `/work/.evidence/catalog-description.txt`.
+
+## Product decisions preserved
+
+- The free sample is a complete authored seed, not a checkout or paid-flow simulation.
+- Eight additional authored weather seeds, eight matching relic variants, and the printable six-camp route log remain paid deliverables.
+- No subscription, checkout placeholder, activation claim, runtime AI feature, multiplayer claim, or external runtime service was added.
+- Demo state remains in memory. Optional real-run data stays in the `last-light:*` browser namespace and can be erased.
+- The visual thesis, original writing, generated-art provenance, plain first-screen language, and scope non-goals remain unchanged.
+
+## Known external dependency
+
+The separate billing-registration operator must register `last-light-expedition-complete`, connect real license validation, and complete checkout plus entitlement QA. Until then, `/license` correctly states that purchases are unavailable. No checkout or activation is claimed as passing.
