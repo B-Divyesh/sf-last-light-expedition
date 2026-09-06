@@ -1,0 +1,4 @@
+User-agent: *
+Allow: /
+
+Sitemap: https://last-light-expedition.sociobot.in/sitemap.xml

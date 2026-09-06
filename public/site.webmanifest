@@ -1,0 +1,12 @@
+{
+  "name": "Last Light Expedition",
+  "short_name": "Last Light",
+  "description": "Choose a route through six camps and reach one of four endings.",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#101819",
+  "theme_color": "#101819",
+  "icons": [
+    { "src": "/apple-touch-icon.png", "sizes": "180x180", "type": "image/png" }
+  ]
+}

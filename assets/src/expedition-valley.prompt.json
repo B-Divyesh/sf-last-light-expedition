@@ -1,0 +1,7 @@
+{
+  "asset": "expedition-valley.png",
+  "date": "2026-09-06",
+  "generator": "Azure AI Foundry factory image deployment via /opt/fleet/lib/gen-image.sh",
+  "prompt": "Use case: stylized-concept. Asset type: wide browser game landscape background. An empty six-camp mountain route seen obliquely from above, a tiny amber tent light on the near ridge and a pale geometric observatory on the far ridge, wind-cut valley at the final hour before night, tactile gouache paint with charcoal contour marks and subtle recycled paper grain, cinematic editorial environmental illustration. Strong S-shaped route from lower left to upper right. Keep calm dark negative space along the left third for an interface ledger. Cold blue-green dusk, restrained amber light, muted lichen and rust details. No people, no animals, no readable text, no letters, no numbers, no logos, no watermark, no brands, no photorealism, no neon fantasy, no dense stars.",
+  "review": "Accepted. No people, text artifacts, logos, watermarks, seams, or unintended symbols observed. Route clearings and observatory read clearly at desktop and mobile crops."
+}

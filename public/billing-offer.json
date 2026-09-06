@@ -1,0 +1,15 @@
+{
+  "slug": "last-light-expedition-complete",
+  "name": "Last Light Expedition Complete Edition",
+  "price_minor": 600,
+  "currency": "USD",
+  "price_type": "one_time_price",
+  "return_url": "https://last-light-expedition.sociobot.in/license",
+  "price_evidence": "The public Complete edition section, Terms page, and purchase-status page state $6 once. The researched brief requires one-time pricing.",
+  "paid_features": [
+    "Eight additional authored weather seeds",
+    "Eight relic variants tied to those seeds",
+    "Printable route log"
+  ],
+  "license_validation_path": "/license"
+}
