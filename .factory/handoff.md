@@ -5,7 +5,7 @@
 Last Light Expedition remains deployed at <https://last-light-expedition.sociobot.in>. Fresh strict Review 2 records **FAIL** with one major finding and zero untested public claims in `.factory/review-2.md`: the required `opt-in-run-storage` claim command failed once on the live Pixel 5 project, then passed on rerun. No product code was changed during this review.
 
 - Implementation and deployed candidate: `8ae84cb5c34e59c0193ee14c6677e623ce05e4c4`
-- Documentation/report content: `2828cdc343713e51995e4bb021a83ba6ed0f98f6`
+- Pre-review documentation baseline: `786fac89794f86fe060c4464de1211d1b4dee446`
 - Deployment resource: existing product-owned Static Web App `sf-last-light-expedition`, production environment only
 - Artifact shape: static local-first browser game; no backend, shared database, staging slot, or multiplayer mode
 
