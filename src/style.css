@@ -78,7 +78,7 @@ button { color: inherit; }
 }
 .wordmark svg { width: 32px; height: 32px; fill: var(--ember); }
 .site-header nav, footer nav { display: flex; align-items: center; flex-wrap: wrap; gap: 8px 24px; }
-.site-header nav a { display: inline-flex; min-height: 44px; align-items: center; color: var(--mist); }
+.site-header nav a { min-width: 44px; min-height: 44px; display: inline-flex; align-items: center; justify-content: center; color: var(--mist); }
 
 .demo-banner {
   position: sticky;
@@ -277,6 +277,7 @@ dialog form { padding: 24px; }
 .legal section { margin-top: 64px; }
 .legal section h2 { font-size: 1.8rem; }
 .legal p { max-width: 66ch; color: var(--mist); }
+.legal a[href^="mailto:"] { min-width: 44px; min-height: 44px; display: inline-flex; align-items: center; }
 .not-found { min-height: 70vh; display: grid; grid-template-columns: .7fr 1fr; align-items: stretch; }
 .not-found > div { padding: 96px 7vw; }
 .not-found .map-panel { min-height: 480px; }

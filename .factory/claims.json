@@ -42,6 +42,20 @@
     "sandbox": "fresh demo route; finish a run; assert no sign-in fields, no non-GET or cross-origin requests, no cookies, and empty localStorage"
   },
   {
+    "id": "real-play-privacy",
+    "claim": "Real play needs no account and sends no gameplay or settings to another service.",
+    "where": "Privacy, README",
+    "test": "npm run test:e2e -- --grep @claim:real-play-privacy",
+    "sandbox": "fresh real-play route; change a setting and finish a run; assert no sign-in fields, cookies, non-GET requests, or cross-origin requests"
+  },
+  {
+    "id": "opt-in-run-storage",
+    "claim": "An unfinished real run is stored only after opt-in, resumes after reload, and Erase saved run removes it.",
+    "where": "Local data and limits, Settings, Privacy, README",
+    "test": "npm run test:e2e -- --grep @claim:opt-in-run-storage",
+    "sandbox": "fresh real-play route; prove a default choice is not stored, opt in and reload at Camp 2, erase the saved run, then reload at Camp 1"
+  },
+  {
     "id": "settings-persist",
     "claim": "Settings persist in this browser.",
     "where": "Settings, README",

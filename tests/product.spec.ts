@@ -102,6 +102,48 @@ test("@claim:local-privacy a full demo needs no account and keeps data local", a
   expect(await page.context().cookies()).toEqual([]);
 });
 
+test("@claim:real-play-privacy real play and settings stay on this site without an account", async ({ page, baseURL }) => {
+  const requests: Array<{ url: string; method: string }> = [];
+  page.on("request", (request) => requests.push({ url: request.url(), method: request.method() }));
+  await page.goto("/");
+  await expect(page.locator('input[type="email"], input[type="password"]')).toHaveCount(0);
+  await page.getByRole("button", { name: "Settings" }).click();
+  await page.getByLabel("Sound effects").check();
+  await page.getByRole("button", { name: "Save settings" }).click();
+  await chooseNames(page, ["Share the load", "Follow Mara", "Rest in the shallow cave", "Use the signal lens", "Let Mara decide", "Work the hinge together"]);
+  await expect(page.getByRole("heading", { name: "A shared dawn" })).toBeVisible();
+  const expectedOrigin = new URL(baseURL!).origin;
+  expect(requests.length).toBeGreaterThan(0);
+  expect(requests.filter(({ url }) => new URL(url).origin !== expectedOrigin)).toEqual([]);
+  expect(requests.filter(({ method }) => method !== "GET")).toEqual([]);
+  expect(await page.context().cookies()).toEqual([]);
+});
+
+test("@claim:opt-in-run-storage an unfinished run persists only after opt-in and can be erased", async ({ page }) => {
+  await page.goto("/");
+  await page.getByRole("button", { name: /Share the load/i }).click();
+  expect(await page.evaluate(() => localStorage.getItem("last-light:run"))).toBeNull();
+  await page.reload();
+  await expect(page.getByLabel("Expedition controls").getByText("Camp 1 of 6", { exact: true })).toBeVisible();
+
+  await page.getByRole("button", { name: /Share the load/i }).click();
+  await page.getByRole("button", { name: "Settings" }).click();
+  await page.getByLabel("Remember unfinished run").check();
+  await page.getByRole("button", { name: "Save settings" }).click();
+  expect(await page.evaluate(() => JSON.parse(localStorage.getItem("last-light:run") ?? "null")?.campIndex)).toBe(1);
+  await page.reload();
+  await expect(page.getByLabel("Expedition controls").getByText("Camp 2 of 6", { exact: true })).toBeVisible();
+
+  await page.getByRole("button", { name: "Settings" }).click();
+  page.once("dialog", (dialog) => dialog.accept());
+  await page.getByRole("button", { name: "Erase saved run" }).click();
+  await expect(page.getByText("Saved run erased. Future runs will not be saved.")).toBeVisible();
+  expect(await page.evaluate(() => localStorage.getItem("last-light:run"))).toBeNull();
+  await page.getByRole("button", { name: "Save settings" }).click();
+  await page.reload();
+  await expect(page.getByLabel("Expedition controls").getByText("Camp 1 of 6", { exact: true })).toBeVisible();
+});
+
 test("@claim:settings-persist real-play settings survive reload", async ({ page }) => {
   await page.goto("/");
   await page.getByRole("button", { name: "Settings" }).click();
@@ -288,6 +330,26 @@ test("routes have distinct titles, one h1, legal content, and a designed 404", a
   await page.goto("/route-that-does-not-exist");
   await expect(page.getByRole("heading", { name: "This route does not exist" })).toBeVisible();
   await expect(page.getByRole("link", { name: "Return to the game" })).toBeVisible();
+});
+
+test("the repaired text links expose at least 44 by 44 CSS pixel targets", async ({ page }) => {
+  const expectMinimumTarget = async (locator: ReturnType<Page["getByRole"]>) => {
+    const box = await locator.boundingBox();
+    expect(box).not.toBeNull();
+    expect(box!.width).toBeGreaterThanOrEqual(44);
+    expect(box!.height).toBeGreaterThanOrEqual(44);
+  };
+
+  await page.setViewportSize({ width: 1280, height: 720 });
+  await page.goto("/");
+  await expectMinimumTarget(page.getByRole("link", { name: "Play", exact: true }));
+  await expectMinimumTarget(page.getByRole("link", { name: "Price", exact: true }));
+  await page.goto("/privacy");
+  await expectMinimumTarget(page.getByRole("link", { name: "privacy@sociobot.in" }));
+
+  await page.setViewportSize({ width: 393, height: 727 });
+  await page.goto("/");
+  await expectMinimumTarget(page.getByRole("link", { name: "Play", exact: true }));
 });
 
 test("@a11y main routes have no serious or critical axe findings", async ({ page }) => {
