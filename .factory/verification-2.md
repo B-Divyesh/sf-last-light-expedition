@@ -3,7 +3,7 @@
 Verified 2026-09-06 UTC against <https://last-light-expedition.sociobot.in>.
 
 - Candidate implementation: `27fd6407972215f43a19dc32396f014f9ae627dd` (`27fd640`)
-- Documentation/evidence revision: recorded by the final report-only follow-up commit
+- Documentation/evidence revision: `adc247698703df42362996299dfe28714d5739e3` (`adc2476`)
 - Verdict: **PASS**
 - Current findings: **0**
 - Previous findings resolved: **4 of 4**

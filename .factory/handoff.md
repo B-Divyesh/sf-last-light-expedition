@@ -9,7 +9,7 @@ The complete authored run remains intact: six irreversible decisions, three reso
 ## Verified revisions and deployment
 
 - Deployed implementation SHA: `27fd6407972215f43a19dc32396f014f9ae627dd`
-- Documentation/evidence SHA: recorded by the final report-only follow-up commit
+- Documentation/evidence SHA: `adc247698703df42362996299dfe28714d5739e3`
 - Live origin: `https://last-light-expedition.sociobot.in`
 - Deployment resource: existing product-owned Static Web App `sf-last-light-expedition` in `centralus`
 - Deployment shape: static application, one production environment, no backend, database, staging slot, or shared service
