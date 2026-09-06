@@ -5,7 +5,7 @@
 Repair 3 passes. Last Light Expedition is deployed at <https://last-light-expedition.sociobot.in> with both Verification 2 findings fixed.
 
 - Implementation and deployed candidate: `8ae84cb5c34e59c0193ee14c6677e623ce05e4c4`
-- Documentation/report commit: recorded by the report-only follow-up commit
+- Documentation/report content: `2828cdc343713e51995e4bb021a83ba6ed0f98f6`
 - Deployment resource: existing product-owned Static Web App `sf-last-light-expedition`, production environment only
 - Artifact shape: static local-first browser game; no backend, shared database, staging slot, or multiplayer mode
 
